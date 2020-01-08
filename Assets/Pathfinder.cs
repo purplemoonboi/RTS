@@ -15,12 +15,14 @@ public class Pathfinder : MonoBehaviour
 
     private void LoadBlocks()
     {
+        /*
         var waypoints = FindObjectOfType<Waypoint>();
         foreach (Waypoint waypoint in waypoints)
         {
             grid.Add(waypoint.GetGridPosition(), waypoint);
         }
         print(grid.Count);
+        */
     }
 
   
