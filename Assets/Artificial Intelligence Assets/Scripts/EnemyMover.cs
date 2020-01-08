@@ -14,7 +14,7 @@ public class EnemyMover : MonoBehaviour
     }
 
 
-    IEnumerator FollowPath()
+    public IEnumerator FollowPath()
     {
         foreach(Waypoint waypoint in path)
         {

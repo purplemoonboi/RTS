@@ -4,30 +4,41 @@ using UnityEngine;
 
 [ExecuteInEditMode]
 [SelectionBase]
+[RequireComponent(typeof(Waypoint))]
 public class EditorSnap : MonoBehaviour
 {
 
-    [Header("Grid Size")] [SerializeField] [Range(10,100)] float gridSize = 10f;
+    
 
     TextMesh textMesh;
+    Waypoint waypoint;
+   
 
-    private void Start()
+    private void Awake()
     {
-       
+        waypoint = GetComponent<Waypoint>();
     }
 
     void Update()
     {
+        SnapToGrid();
+        UpdateLabel();
+    }
+
+    void SnapToGrid()
+    {
+        int gridSize = waypoint.GetGridSize();
+        transform.position = new Vector3(waypoint.GetGridPosition().x, 0f, waypoint.GetGridPosition().y);
+    }
+
+    void UpdateLabel()
+    {
 
         textMesh = GetComponentInChildren<TextMesh>();
-        Vector3 snapPos;
 
-        snapPos.x = Mathf.RoundToInt(transform.position.x /gridSize) * gridSize;
-        snapPos.z = Mathf.RoundToInt(transform.position.z / gridSize) * gridSize;
-
-        transform.position = new Vector3(snapPos.x, 0f, snapPos.z);
-
-        string labelText = snapPos.x / gridSize + ", " + snapPos.z / gridSize;
+    
+        int gridSize = waypoint.GetGridSize();
+        string labelText = waypoint.GetGridPosition().x / gridSize + ", " + waypoint.GetGridPosition().y / gridSize;
         textMesh.text = labelText;
         gameObject.name = labelText;
     }
