@@ -23,12 +23,7 @@ public class EnemyMover : MonoBehaviour
 
             yield return new WaitForSeconds(1f);
 
-            Vector3 finalPos = new Vector3(3, 0, 1);
-            if(finalPos.x == 3 && finalPos.z == 1)
-            {
-                StartCoroutine(FollowPath());
-            }
-            
+         
         }
     }
 
