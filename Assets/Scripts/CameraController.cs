@@ -2,15 +2,17 @@
 using System.Collections.Generic;
 using UnityEngine;
 
+[RequireComponent(typeof(SqaudHandler))]
 public class CameraController : MonoBehaviour
 {
-    [SerializeField]
-    public float panSpeed, minCameraHeight, maxCameraHeight, panBorderThickness, rotateSpeed;
-    public Vector2 panLimit;
-    public Vector3 cameraPosition;
-    public float xposition, yposition, zposition;
-    public GameObject cameraTarget;
-    public GameObject camera;
+   
+    [SerializeField] private float panSpeed, minCameraHeight, maxCameraHeight, panBorderThickness, rotateSpeed;
+    [SerializeField] private Vector2 panLimit;
+    [SerializeField] private Vector3 cameraPosition;
+    [SerializeField] private float xposition, yposition, zposition;
+    [SerializeField] private GameObject cameraTarget;
+    [SerializeField] private GameObject camera;
+    [SerializeField] private float targetOffset;
 
     void Start()
     {
@@ -21,6 +23,8 @@ public class CameraController : MonoBehaviour
         minCameraHeight = -5f;
         maxCameraHeight = 10f;
         rotateSpeed = 10f;
+        targetOffset = 15f;
+
     }
 
     void Update()
@@ -30,9 +34,9 @@ public class CameraController : MonoBehaviour
         yposition = cameraPosition.y;
         zposition = cameraPosition.z;
 
-        zoomCamera();
-        panCamera();
-        rotateCamera();
+        ZoomCamera();
+        PanCamera();
+        RotateCamera();
 
         cameraPosition.x = Mathf.Clamp(cameraPosition.x, -panLimit.x, panLimit.x);
         cameraPosition.z = Mathf.Clamp(cameraPosition.z, -panLimit.y, panLimit.y);
@@ -41,7 +45,7 @@ public class CameraController : MonoBehaviour
         transform.position = cameraPosition;
     }
 
-    void panCamera()
+    void PanCamera()
     {
         //Move camera forward
         if (Input.GetKey(KeyCode.W) || Input.mousePosition.y >= Screen.height - panBorderThickness)
@@ -84,7 +88,7 @@ public class CameraController : MonoBehaviour
         }
     }
 
-    void zoomCamera()
+    void ZoomCamera()
     {
         Vector3 cameraZoom = camera.transform.position;
 
@@ -107,7 +111,7 @@ public class CameraController : MonoBehaviour
         camera.transform.position = cameraZoom;
     }
 
-    void rotateCamera()
+    void RotateCamera()
     {
         //Rotate camera left
         if (Input.GetKey(KeyCode.LeftArrow))
@@ -121,5 +125,10 @@ public class CameraController : MonoBehaviour
         {
             transform.Rotate(0, -(rotateSpeed * Time.deltaTime), 0);
         }
+    }
+
+    void FollowTarget()
+    {
+
     }
 }
