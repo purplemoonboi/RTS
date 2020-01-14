@@ -24,7 +24,7 @@ public class Waypoint : MonoBehaviour
     public void SetColour(Color colour)
     {
         MeshRenderer topRender = transform.Find("Top").GetComponent<MeshRenderer>();
-        topRender.material.color = colour;
+        topRender.material.SetColor("_BaseColor",colour);
     }
 
 

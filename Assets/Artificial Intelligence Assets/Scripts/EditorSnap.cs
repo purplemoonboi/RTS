@@ -8,7 +8,7 @@ using UnityEngine;
 public class EditorSnap : MonoBehaviour
 {
 
-    
+   
 
     TextMesh textMesh;
     Waypoint waypoint;
