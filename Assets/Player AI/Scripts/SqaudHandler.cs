@@ -5,7 +5,7 @@ using UnityEngine;
 
 public enum GameState
 {
-    Instantiation = 1,
+   BuildMode = 1,
     FreeMode = 2,
     SqaudMode = 3,
     MoveMode = 4
@@ -19,6 +19,9 @@ public class SqaudHandler : MonoBehaviour
     public List<NavMeshAgent> list_navMeshAgent;
 
     private Transform selectedObject;
+    [SerializeField] private Transform buildingTransform; 
+
+
     private Object originalObj;
 
     GameState gameState;
@@ -32,46 +35,15 @@ public class SqaudHandler : MonoBehaviour
     // Update is called once per frame
     void Update()
     {
-        InstantiateSqaud();
+       
         MoveSelectedSqaud();
         SelectSqaud();
-        SelectAllActiveSqauds();
+        PlaceBuilding();
 
         print(list_navMeshAgent.Count);
     }
 
-    void InstantiateSqaud()
-    {
-        if (Input.GetKey(KeyCode.I))
-        {
-            gameState = GameState.Instantiation;
-            print(gameState);
-        }
-
-        if (gameState == GameState.Instantiation)
-        {
-
-            list_navMeshAgent.Clear();
-
-            if (Input.GetMouseButtonDown(0))
-            {
-                originalObj = FindObjectOfType<Solider>();
-                objectRotation = Quaternion.Euler(0, 0, 0);
-                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
-                RaycastHit hitInfo;
-
-                if (Physics.Raycast(ray, out hitInfo))
-                {
-                    Instantiate(originalObj, hitInfo.point, objectRotation);
-                }
-            }
-        }
-        else if (Input.GetKey(KeyCode.F))
-        {
-            gameState = GameState.FreeMode;
-            print(gameState);
-        }
-    }
+   
 
     void SelectSqaud()
     { 
@@ -111,20 +83,7 @@ public class SqaudHandler : MonoBehaviour
         }
     }
 
-    void SelectAllActiveSqauds()
-    {
-        if (Input.GetKey(KeyCode.S))
-        {
-            gameState = GameState.SqaudMode;
-            print(gameState);
-        }
-
-        if(Input.GetKey(KeyCode.P))
-        {
-             //select all 
-        }
-    }
-
+  
     void MoveSelectedSqaud()
     {
 
@@ -159,6 +118,32 @@ public class SqaudHandler : MonoBehaviour
             }
         }
 
+    }
+
+    void PlaceBuilding()
+    {
+        if (Input.GetKey(KeyCode.B))
+        {
+            gameState = GameState.BuildMode;
+            print(gameState);
+            
+        }
+        //If resources !< 10 ... do! 
+        if(gameState == GameState.BuildMode)
+        {
+            if(Input.GetMouseButtonDown(0))
+            {
+                Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+                RaycastHit hitInfo;
+
+                if(Physics.Raycast(ray, out hitInfo))// NOTE NEED GROUND MASK!
+                {
+                  
+
+                    Instantiate(buildingTransform, new Vector3(hitInfo.point.x, hitInfo.point.y, hitInfo.point.z), objectRotation);
+                }
+            }
+        }
     }
 
     float DstBetweenPoints3D(Vector3 transform_one, Vector3 transform_two)
