@@ -43,7 +43,7 @@ public class Solider : MonoBehaviour
     {
         if(e_state != State.Dead)
         {
-            StartCoroutine(Patrol());
+            //StartCoroutine(Patrol());
         }
         else
         {
@@ -51,6 +51,7 @@ public class Solider : MonoBehaviour
         }
     }
 
+    /*
     IEnumerator Patrol()
     {
         Vector3 newPosition = GenerateNewCoordinates();
@@ -60,6 +61,7 @@ public class Solider : MonoBehaviour
         }
     }
 
+    */
     Vector3 GenerateNewCoordinates()
     {
         Vector3 newPosition = new Vector3(Random.value * 10, 0, Random.value * 10);

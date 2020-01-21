@@ -40,7 +40,7 @@ public class InfantrySpawner : MonoBehaviour
        var Object = Instantiate(troopTransform, spawnPos.transform.position, Quaternion.Euler(0, 0, 0));
 
 
-        troopRecord.Add( ,Object)
+       // troopRecord.Add( ,Object)
 
         yield return new WaitForSeconds(10f);
 

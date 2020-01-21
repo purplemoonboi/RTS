@@ -113,18 +113,32 @@ public class CameraController : MonoBehaviour
 
     void RotateCamera()
     {
-        //Rotate camera left
-        if (Input.GetKey(KeyCode.LeftArrow))
+        
+        if(Input.GetKey(KeyCode.LeftAlt) && Input.GetMouseButton(0) && Input.mousePosition.x > Screen.width / 2)
         {
-            transform.Rotate(0, rotateSpeed * Time.deltaTime, 0);
-           
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hitInfo;
+
+            if (Physics.Raycast(ray, out hitInfo))
+            {
+                transform.RotateAround(hitInfo.point, Vector3.up, 30 * Time.deltaTime);
+            }
         }
 
-        //Rotate camera right
-        if (Input.GetKey(KeyCode.RightArrow))
+        if (Input.GetKey(KeyCode.LeftAlt) && Input.GetMouseButton(0) && Input.mousePosition.x < Screen.width / 2)
         {
-            transform.Rotate(0, -(rotateSpeed * Time.deltaTime), 0);
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hitInfo;
+           
+
+            if (Physics.Raycast(ray, out hitInfo))
+            {
+                transform.RotateAround(hitInfo.point, Vector3.up, -30 * Time.deltaTime);
+                transform.position = new Vector3()
+            }
         }
+       
+
     }
 
     void FollowTarget()
