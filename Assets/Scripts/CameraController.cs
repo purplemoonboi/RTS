@@ -2,17 +2,21 @@
 using System.Collections.Generic;
 using UnityEngine;
 
-[RequireComponent(typeof(SqaudHandler))]
+[RequireComponent(typeof(GameHandler))]
 public class CameraController : MonoBehaviour
 {
    
     [SerializeField] private float panSpeed, minCameraHeight, maxCameraHeight, panBorderThickness, rotateSpeed;
     [SerializeField] private Vector2 panLimit;
     [SerializeField] private Vector3 cameraPosition;
-    [SerializeField] private float xposition, yposition, zposition;
-    [SerializeField] private GameObject cameraTarget;
+    [SerializeField] private Vector3 targetOffset;
+
+
+    [SerializeField] private Transform cameraTarget;
     [SerializeField] private GameObject camera;
-    [SerializeField] private float targetOffset;
+   
+    private int layerMask = 1 << 9;
+    private bool isFollowing;
 
     void Start()
     {
@@ -23,16 +27,15 @@ public class CameraController : MonoBehaviour
         minCameraHeight = -5f;
         maxCameraHeight = 10f;
         rotateSpeed = 10f;
-        targetOffset = 15f;
+        targetOffset.x = 15f;
+        isFollowing = false;
 
     }
 
     void Update()
     {
         cameraPosition = transform.position;
-        xposition = cameraPosition.x;
-        yposition = cameraPosition.y;
-        zposition = cameraPosition.z;
+    
 
         ZoomCamera();
         PanCamera();
@@ -114,14 +117,17 @@ public class CameraController : MonoBehaviour
     void RotateCamera()
     {
         
+
         if(Input.GetKey(KeyCode.LeftAlt) && Input.GetMouseButton(0) && Input.mousePosition.x > Screen.width / 2)
         {
             Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
             RaycastHit hitInfo;
 
-            if (Physics.Raycast(ray, out hitInfo))
+            if (Physics.Raycast(ray, out hitInfo, 20f))
             {
+
                 transform.RotateAround(hitInfo.point, Vector3.up, 30 * Time.deltaTime);
+
             }
         }
 
@@ -131,18 +137,35 @@ public class CameraController : MonoBehaviour
             RaycastHit hitInfo;
            
 
-            if (Physics.Raycast(ray, out hitInfo))
+            if (Physics.Raycast(ray, out hitInfo, 20f))
             {
+
                 transform.RotateAround(hitInfo.point, Vector3.up, -30 * Time.deltaTime);
-                transform.position = new Vector3()
+
+
             }
         }
-       
 
+       
     }
 
     void FollowTarget()
     {
+        if(Input.GetMouseButtonDown(0))
+        {
+            Ray ray = Camera.main.ScreenPointToRay(Input.mousePosition);
+            RaycastHit hitInfo;
 
+            if(Physics.Raycast(ray, out hitInfo, layerMask))
+            {
+                cameraTarget = hitInfo.transform.GetComponent<Transform>();
+                isFollowing = true;
+                transform.position = cameraTarget.position + targetOffset;
+            }
+            else if(!Physics.Raycast(ray, out hitInfo, layerMask))
+            {
+                isFollowing = false;
+            }
+        }
     }
 }

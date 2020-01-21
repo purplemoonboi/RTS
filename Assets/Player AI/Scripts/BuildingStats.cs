@@ -6,12 +6,13 @@ public class BuildingStats : MonoBehaviour
 {
 
     [SerializeField] private float buildingIntergrity;
-   
+    private Collider thisBuildingsCollider;
 
 
     // Start is called before the first frame update
     void Start()
     {
+        thisBuildingsCollider = GetComponent<Collider>();
     }
 
     // Update is called once per frame
@@ -30,4 +31,6 @@ public class BuildingStats : MonoBehaviour
             Destroy(GameObject.Find("Barracks"));
         }
     }
+
+    
 }

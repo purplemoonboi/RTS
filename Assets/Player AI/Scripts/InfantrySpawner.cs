@@ -7,6 +7,7 @@ public class InfantrySpawner : MonoBehaviour
 
     [SerializeField] private Transform spawnPos;
     [SerializeField] private Transform troopTransform;
+    [SerializeField] private Transform rallyPoint;
 
     private int referenceNumber = 0;
 

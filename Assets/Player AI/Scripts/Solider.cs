@@ -21,6 +21,8 @@ public class Solider : MonoBehaviour
 
     bool isSelected = false;
 
+    private int health;
+
     private void Awake()
     {
         navMeshAgent = GetComponent<NavMeshAgent>();
@@ -30,6 +32,7 @@ public class Solider : MonoBehaviour
     void Start()
     {
         e_state = State.Alive;
+        health = 100;
         Brain();
     }
 
@@ -48,6 +51,14 @@ public class Solider : MonoBehaviour
         else
         {
             Destroy(transform);
+        }
+    }
+
+    void Dead()
+    {
+        if(health < 0)
+        {
+            e_state = State.Dead;
         }
     }
 
